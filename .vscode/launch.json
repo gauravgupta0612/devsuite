@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run RepoPilot",
+      "type": "extensionHost",
+      "request": "launch",
+      "args": ["--extensionDevelopmentPath=${workspaceFolder}/extensions/repopilot"],
+      "outFiles": ["${workspaceFolder}/extensions/repopilot/dist/**/*.js"],
+      "preLaunchTask": "build repopilot"
+    }
+  ]
+}

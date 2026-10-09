@@ -1,0 +1,12 @@
+{
+  "name": "@devsuite/core",
+  "version": "0.1.0",
+  "description": "Shared repository indexing, language analysis and dependency-graph engine for the DevSuite VS Code extensions.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "tsc -p tsconfig.json && node --test test/core.test.js"
+  }
+}

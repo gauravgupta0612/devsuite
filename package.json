@@ -1,0 +1,25 @@
+{
+  "name": "devsuite",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Shared code-analysis engine + focused VS Code extensions (RepoPilot, DevImpact, CodeGuard, TraceLens, BugTrail)",
+  "workspaces": [
+    "packages/*",
+    "extensions/*"
+  ],
+  "scripts": {
+    "build": "npm run build -w @devsuite/core && npm run build -w repopilot",
+    "test": "npm test -w @devsuite/core",
+    "package:repopilot": "npm run package -w repopilot",
+    "typecheck": "npm run typecheck -w repopilot"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5",
+    "esbuild": "^0.21.5",
+    "@types/node": "^20.14.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gauravgupta0612/devsuite.git"
+  }
+}

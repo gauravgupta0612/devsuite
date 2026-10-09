@@ -1,0 +1,314 @@
+{
+  "name": "repopilot",
+  "displayName": "RepoPilot \u2014 Project Understanding Assistant",
+  "description": "Open any repository and instantly see its architecture, entry points, build commands, modules and dependency map \u2014 with evidence links for every claim. Supports TypeScript/JavaScript, Python, Java/Kotlin, Go, C# and IBM i (RPGLE, SQLRPGLE, CL, DDS, SQL, COBOL).",
+  "version": "0.1.0",
+  "publisher": "gauravgupta0612",
+  "author": {
+    "name": "gauravgupta0612",
+    "url": "https://github.com/gauravgupta0612"
+  },
+  "license": "MIT",
+  "icon": "media/logo.png",
+  "galleryBanner": {
+    "color": "#162842",
+    "theme": "dark"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gauravgupta0612/devsuite.git",
+    "directory": "extensions/repopilot"
+  },
+  "bugs": {
+    "url": "https://github.com/gauravgupta0612/devsuite/issues"
+  },
+  "homepage": "https://github.com/gauravgupta0612/devsuite/tree/main/extensions/repopilot#readme",
+  "engines": {
+    "vscode": "^1.95.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Visualization",
+    "Other",
+    "AI"
+  ],
+  "keywords": [
+    "onboarding",
+    "architecture",
+    "dependency graph",
+    "codebase",
+    "ibm i",
+    "rpg",
+    "rpgle",
+    "code map"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "repopilot",
+          "title": "RepoPilot",
+          "icon": "media/activity.svg"
+        }
+      ]
+    },
+    "views": {
+      "repopilot": [
+        {
+          "id": "repopilot.overview",
+          "name": "Project Overview"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "repopilot.overview",
+        "contents": "RepoPilot hasn't scanned this workspace yet.\n[Scan Workspace](command:repopilot.scan)\nEverything runs locally \u2014 no code leaves your machine unless you ask a question with a language model."
+      }
+    ],
+    "commands": [
+      {
+        "command": "repopilot.scan",
+        "title": "Scan Workspace",
+        "category": "RepoPilot",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "repopilot.openGuide",
+        "title": "Open Onboarding Guide",
+        "category": "RepoPilot",
+        "icon": "$(book)"
+      },
+      {
+        "command": "repopilot.showMap",
+        "title": "Show Dependency Map",
+        "category": "RepoPilot",
+        "icon": "$(type-hierarchy)"
+      },
+      {
+        "command": "repopilot.ask",
+        "title": "Ask About This Codebase",
+        "category": "RepoPilot",
+        "icon": "$(comment-discussion)"
+      },
+      {
+        "command": "repopilot.showDependents",
+        "title": "Who Uses This File?",
+        "category": "RepoPilot",
+        "icon": "$(references)"
+      },
+      {
+        "command": "repopilot.showDependencies",
+        "title": "What Does This File Use?",
+        "category": "RepoPilot"
+      },
+      {
+        "command": "repopilot.exportIndex",
+        "title": "Export Index as JSON",
+        "category": "RepoPilot"
+      },
+      {
+        "command": "repopilot.runBuildCommand",
+        "title": "Run in Terminal",
+        "category": "RepoPilot",
+        "icon": "$(play)"
+      },
+      {
+        "command": "repopilot.openEvidence",
+        "title": "Open Evidence",
+        "category": "RepoPilot"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "repopilot.scan",
+          "when": "view == repopilot.overview",
+          "group": "navigation@1"
+        },
+        {
+          "command": "repopilot.openGuide",
+          "when": "view == repopilot.overview",
+          "group": "navigation@2"
+        },
+        {
+          "command": "repopilot.showMap",
+          "when": "view == repopilot.overview",
+          "group": "navigation@3"
+        },
+        {
+          "command": "repopilot.ask",
+          "when": "view == repopilot.overview",
+          "group": "navigation@4"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "repopilot.runBuildCommand",
+          "when": "view == repopilot.overview && viewItem == buildCommand",
+          "group": "inline"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "repopilot.showDependents",
+          "group": "navigation@90"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "repopilot.showDependents",
+          "when": "!explorerResourceIsFolder",
+          "group": "navigation@90"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "repopilot.runBuildCommand",
+          "when": "false"
+        },
+        {
+          "command": "repopilot.openEvidence",
+          "when": "false"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "RepoPilot",
+      "properties": {
+        "repopilot.scanOnStartup": {
+          "type": "boolean",
+          "default": true,
+          "description": "Scan the workspace automatically when VS Code starts."
+        },
+        "repopilot.autoRescan": {
+          "type": "boolean",
+          "default": true,
+          "description": "Re-scan in the background (debounced) after files are saved, created or deleted."
+        },
+        "repopilot.exclude": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Extra glob patterns to exclude (node_modules, .git, dist, build, target... and .gitignore entries are always excluded)."
+        },
+        "repopilot.maxFiles": {
+          "type": "number",
+          "default": 20000,
+          "minimum": 100,
+          "description": "Maximum number of files to index."
+        },
+        "repopilot.useLanguageModel": {
+          "type": "boolean",
+          "default": true,
+          "description": "Use an available VS Code language model (e.g. GitHub Copilot) to answer 'Ask' questions. When off or unavailable, RepoPilot shows the ranked evidence only."
+        },
+        "repopilot.guideLocation": {
+          "type": "string",
+          "enum": [
+            "workspace",
+            "untitled"
+          ],
+          "default": "workspace",
+          "description": "Save the onboarding guide to .repopilot/ONBOARDING.md in the workspace, or open it as an unsaved document."
+        }
+      }
+    },
+    "chatParticipants": [
+      {
+        "id": "repopilot.chat",
+        "name": "repopilot",
+        "fullName": "RepoPilot",
+        "description": "Ask about this codebase \u2014 answers cite the files they come from",
+        "isSticky": true,
+        "commands": [
+          {
+            "name": "overview",
+            "description": "Summarise the project architecture"
+          },
+          {
+            "name": "build",
+            "description": "How do I build, run and test this project?"
+          },
+          {
+            "name": "uses",
+            "description": "Who depends on the active file?"
+          }
+        ]
+      }
+    ],
+    "languageModelTools": [
+      {
+        "name": "repopilot_projectOverview",
+        "displayName": "RepoPilot: Project overview",
+        "toolReferenceName": "repoOverview",
+        "canBeReferencedInPrompt": true,
+        "icon": "$(book)",
+        "modelDescription": "Returns a structured overview of the open repository: languages, frameworks, build systems and commands, entry points, modules and their dependencies, core (most-depended-upon) files and circular dependencies. Use it before answering questions about project structure.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {}
+        }
+      },
+      {
+        "name": "repopilot_fileDependents",
+        "displayName": "RepoPilot: File dependents",
+        "toolReferenceName": "repoDependents",
+        "canBeReferencedInPrompt": true,
+        "icon": "$(references)",
+        "modelDescription": "Given a repository-relative file path, returns the files that depend on it (directly and transitively, with distance) and the files it depends on. Works for JS/TS, Python, Java, Go and IBM i RPG/CL/DDS/SQL. Use it to assess the impact of changing a file.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "file": {
+              "type": "string",
+              "description": "Repository-relative path, e.g. src/services/user.ts or qrpglesrc/ordent.sqlrpgle"
+            }
+          },
+          "required": [
+            "file"
+          ]
+        }
+      },
+      {
+        "name": "repopilot_searchCode",
+        "displayName": "RepoPilot: Search codebase",
+        "toolReferenceName": "repoSearch",
+        "canBeReferencedInPrompt": true,
+        "icon": "$(search)",
+        "modelDescription": "Ranks repository files relevant to a natural-language question using file paths, symbol names and content, and returns the top files with the reason and line to look at.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "query"
+          ]
+        }
+      }
+    ]
+  },
+  "scripts": {
+    "build": "node esbuild.js",
+    "watch": "node esbuild.js --watch",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "package": "npm run typecheck && node esbuild.js --production && vsce package --no-dependencies",
+    "publish:vsce": "vsce publish --no-dependencies --packagePath"
+  },
+  "dependencies": {
+    "@devsuite/core": "0.1.0"
+  },
+  "devDependencies": {
+    "@types/vscode": "~1.95.0",
+    "@vscode/vsce": "^3.2.1"
+  }
+}
