@@ -6,3 +6,8 @@ export { walkRepository, globToRegExp, DEFAULT_EXCLUDES } from './scanner';
 export { parseSource } from './parsers';
 export { generateOnboardingGuide, moduleMermaid, evidenceLink } from './guide';
 export { searchIndex, snippet, tokenize, SearchHit } from './search';
+export { getChanges, getChurn, parseUnifiedDiff, isGitRepository, currentBranch, defaultBaseRef, DiffBase, ChangedFile, Hunk } from './git';
+export { analyzeImpact, impactReportMarkdown, symbolsAtLines, testCommandsFor, ImpactChange, ImpactResult, AffectedFile, TestCommand, TestRecommendation } from './impact';
+export { assessRisk, riskReportMarkdown, LINE_RULES, RiskReport, RiskFinding, FileRisk, Severity, RiskCategory } from './risk';
+export { findEndpoints, traceEndpoint, flowToMermaid, extractBody, Endpoint, FlowNode, FlowKind } from './routes';
+export { extractErrors, normalizeMessage, signatureSimilarity, ExtractedError } from './errors';

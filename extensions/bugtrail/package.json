@@ -1,0 +1,275 @@
+{
+  "name": "bugtrail",
+  "displayName": "BugTrail \u2014 Debugging Memory",
+  "description": "Automatically keeps a searchable timeline of the errors you hit (terminal, debugger, tasks), what you edited while fixing them and what finally worked \u2014 and tells you when a bug you already solved comes back, in any project. Understands JS/TS, Python, Java, .NET, Go and IBM i message IDs (CPF, MCH, RNX, SQL).",
+  "version": "0.1.0",
+  "publisher": "gauravgupta0612",
+  "author": {
+    "name": "gauravgupta0612",
+    "url": "https://github.com/gauravgupta0612"
+  },
+  "license": "MIT",
+  "icon": "media/logo.png",
+  "galleryBanner": {
+    "color": "#3b2a12",
+    "theme": "dark"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gauravgupta0612/devsuite.git",
+    "directory": "extensions/bugtrail"
+  },
+  "bugs": {
+    "url": "https://github.com/gauravgupta0612/devsuite/issues"
+  },
+  "homepage": "https://github.com/gauravgupta0612/devsuite/tree/main/extensions/bugtrail#readme",
+  "engines": {
+    "vscode": "^1.95.0"
+  },
+  "categories": [
+    "Debuggers",
+    "Other",
+    "AI"
+  ],
+  "keywords": [
+    "debugging",
+    "errors",
+    "bug tracking",
+    "history",
+    "stack trace",
+    "troubleshooting",
+    "knowledge base",
+    "ibm i"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "views": {
+      "debug": [
+        {
+          "id": "bugtrail.timeline",
+          "name": "BugTrail",
+          "icon": "media/activity.svg"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "bugtrail.timeline",
+        "contents": "BugTrail records errors from your terminals, debug sessions and tasks automatically \u2014 nothing recorded yet.\n[Record Error from Selection](command:bugtrail.recordSelection)\n[Search Debugging History](command:bugtrail.search)"
+      }
+    ],
+    "commands": [
+      {
+        "command": "bugtrail.search",
+        "title": "Search Debugging History",
+        "category": "BugTrail",
+        "icon": "$(search)"
+      },
+      {
+        "command": "bugtrail.markResolved",
+        "title": "Mark Bug as Fixed\u2026",
+        "category": "BugTrail",
+        "icon": "$(check)"
+      },
+      {
+        "command": "bugtrail.addNote",
+        "title": "Add Note to Bug\u2026",
+        "category": "BugTrail",
+        "icon": "$(note)"
+      },
+      {
+        "command": "bugtrail.recordSelection",
+        "title": "Record Error from Selection",
+        "category": "BugTrail",
+        "icon": "$(record)"
+      },
+      {
+        "command": "bugtrail.showDetails",
+        "title": "Show Bug Details",
+        "category": "BugTrail",
+        "icon": "$(book)"
+      },
+      {
+        "command": "bugtrail.exportMarkdown",
+        "title": "Export History as Markdown",
+        "category": "BugTrail",
+        "icon": "$(export)"
+      },
+      {
+        "command": "bugtrail.delete",
+        "title": "Delete Bug Entry",
+        "category": "BugTrail",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "bugtrail.clearAll",
+        "title": "Clear All History",
+        "category": "BugTrail"
+      },
+      {
+        "command": "bugtrail.refresh",
+        "title": "Refresh",
+        "category": "BugTrail",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "bugtrail.openEvidence",
+        "title": "Open",
+        "category": "BugTrail"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "bugtrail.search",
+          "when": "view == bugtrail.timeline",
+          "group": "navigation@1"
+        },
+        {
+          "command": "bugtrail.recordSelection",
+          "when": "view == bugtrail.timeline",
+          "group": "navigation@2"
+        },
+        {
+          "command": "bugtrail.refresh",
+          "when": "view == bugtrail.timeline",
+          "group": "navigation@3"
+        },
+        {
+          "command": "bugtrail.exportMarkdown",
+          "when": "view == bugtrail.timeline",
+          "group": "more@1"
+        },
+        {
+          "command": "bugtrail.clearAll",
+          "when": "view == bugtrail.timeline",
+          "group": "more@2"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "bugtrail.markResolved",
+          "when": "view == bugtrail.timeline && viewItem == bug.open",
+          "group": "inline@1"
+        },
+        {
+          "command": "bugtrail.addNote",
+          "when": "view == bugtrail.timeline && viewItem =~ /^bug\\./",
+          "group": "inline@2"
+        },
+        {
+          "command": "bugtrail.delete",
+          "when": "view == bugtrail.timeline && viewItem =~ /^bug\\./",
+          "group": "zz@1"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "bugtrail.recordSelection",
+          "when": "editorHasSelection",
+          "group": "navigation@93"
+        }
+      ],
+      "terminal/context": [
+        {
+          "command": "bugtrail.recordSelection",
+          "group": "navigation@93"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "bugtrail.openEvidence",
+          "when": "false"
+        },
+        {
+          "command": "bugtrail.showDetails",
+          "when": "false"
+        },
+        {
+          "command": "bugtrail.delete",
+          "when": "false"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "BugTrail",
+      "properties": {
+        "bugtrail.captureTerminal": {
+          "type": "boolean",
+          "default": true,
+          "description": "Record errors from failed terminal commands (needs terminal shell integration, on by default in VS Code)."
+        },
+        "bugtrail.captureDebug": {
+          "type": "boolean",
+          "default": true,
+          "description": "Record exceptions and stderr errors from debug sessions."
+        },
+        "bugtrail.captureTasks": {
+          "type": "boolean",
+          "default": true,
+          "description": "Record failed tasks (build, test\u2026)."
+        },
+        "bugtrail.notifyRecurring": {
+          "type": "boolean",
+          "default": true,
+          "description": "Notify when an error you have fixed before (in any project) shows up again, with how you fixed it."
+        },
+        "bugtrail.autoResolve": {
+          "type": "boolean",
+          "default": true,
+          "description": "Mark a bug as fixed automatically when the same command/task/debug configuration succeeds afterwards."
+        },
+        "bugtrail.ignorePatterns": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "ExperimentalWarning",
+            "DeprecationWarning"
+          ],
+          "description": "Errors whose text matches any of these regular expressions are not recorded."
+        }
+      }
+    },
+    "languageModelTools": [
+      {
+        "name": "bugtrail_searchHistory",
+        "displayName": "BugTrail: Search debugging history",
+        "toolReferenceName": "bugHistory",
+        "canBeReferencedInPrompt": true,
+        "icon": "$(bug)",
+        "modelDescription": "Searches the developer's personal debugging history (errors seen in terminals, debug sessions and tasks across all their projects) and returns matching bugs with how they were fixed: files changed, notes, and the command that succeeded afterwards. Use it when the user hits an error to check whether they solved it before.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string",
+              "description": "Error text, error type (e.g. TypeError, CPF4131) or keywords"
+            }
+          },
+          "required": [
+            "query"
+          ]
+        }
+      }
+    ]
+  },
+  "scripts": {
+    "build": "node esbuild.js",
+    "watch": "node esbuild.js --watch",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "package": "npm run typecheck && node esbuild.js --production && vsce package --no-dependencies",
+    "test": "esbuild test/entry.ts --bundle --platform=node --format=cjs --outfile=out-test/store.js --alias:@devsuite/core=../../packages/core/src/index.ts --log-level=error && node --test test/store.test.js"
+  },
+  "dependencies": {
+    "@devsuite/core": "0.1.0"
+  },
+  "devDependencies": {
+    "@types/vscode": "~1.95.0",
+    "@vscode/vsce": "^3.2.1"
+  }
+}

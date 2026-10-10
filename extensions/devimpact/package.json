@@ -1,0 +1,301 @@
+{
+  "name": "devimpact",
+  "displayName": "DevImpact \u2014 Change Impact Analyzer",
+  "description": "Before you change code, see what depends on it, what could break and which tests to run. Works on uncommitted changes, staged changes, branches, files and single functions \u2014 for TypeScript/JavaScript, Python, Java/Kotlin, Go and IBM i (RPGLE, CL, DDS, SQL).",
+  "version": "0.1.0",
+  "publisher": "gauravgupta0612",
+  "author": {
+    "name": "gauravgupta0612",
+    "url": "https://github.com/gauravgupta0612"
+  },
+  "license": "MIT",
+  "icon": "media/logo.png",
+  "galleryBanner": {
+    "color": "#3a1f4d",
+    "theme": "dark"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gauravgupta0612/devsuite.git",
+    "directory": "extensions/devimpact"
+  },
+  "bugs": {
+    "url": "https://github.com/gauravgupta0612/devsuite/issues"
+  },
+  "homepage": "https://github.com/gauravgupta0612/devsuite/tree/main/extensions/devimpact#readme",
+  "engines": {
+    "vscode": "^1.95.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Testing",
+    "Other",
+    "AI"
+  ],
+  "keywords": [
+    "impact analysis",
+    "change impact",
+    "blast radius",
+    "dependencies",
+    "tests to run",
+    "code review",
+    "refactoring",
+    "ibm i",
+    "rpgle"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "views": {
+      "scm": [
+        {
+          "id": "devimpact.impact",
+          "name": "Change Impact",
+          "icon": "media/activity.svg"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "devimpact.impact",
+        "contents": "See what your changes affect before you commit.\n[Analyse Uncommitted Changes](command:devimpact.analyzeChanges)\n[Analyse Branch vs Main](command:devimpact.analyzeBranch)\nOr right-click a file or function \u2192 **DevImpact: What Does Changing This Affect?**"
+      }
+    ],
+    "commands": [
+      {
+        "command": "devimpact.analyzeChanges",
+        "title": "Analyse Uncommitted Changes",
+        "category": "DevImpact",
+        "icon": "$(git-commit)"
+      },
+      {
+        "command": "devimpact.analyzeStaged",
+        "title": "Analyse Staged Changes",
+        "category": "DevImpact",
+        "icon": "$(diff-added)"
+      },
+      {
+        "command": "devimpact.analyzeBranch",
+        "title": "Analyse Branch vs Base\u2026",
+        "category": "DevImpact",
+        "icon": "$(git-branch)"
+      },
+      {
+        "command": "devimpact.analyzeFile",
+        "title": "What Does Changing This File Affect?",
+        "category": "DevImpact",
+        "icon": "$(file-code)"
+      },
+      {
+        "command": "devimpact.analyzeSymbol",
+        "title": "What Does Changing This Function Affect?",
+        "category": "DevImpact",
+        "icon": "$(symbol-method)"
+      },
+      {
+        "command": "devimpact.runTests",
+        "title": "Run Recommended Tests",
+        "category": "DevImpact",
+        "icon": "$(beaker)"
+      },
+      {
+        "command": "devimpact.runTestCommand",
+        "title": "Run",
+        "category": "DevImpact",
+        "icon": "$(play)"
+      },
+      {
+        "command": "devimpact.openReport",
+        "title": "Open Impact Report",
+        "category": "DevImpact",
+        "icon": "$(book)"
+      },
+      {
+        "command": "devimpact.copyReport",
+        "title": "Copy Impact Report (Markdown)",
+        "category": "DevImpact",
+        "icon": "$(copy)"
+      },
+      {
+        "command": "devimpact.refresh",
+        "title": "Re-run Last Analysis",
+        "category": "DevImpact",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "devimpact.openEvidence",
+        "title": "Open",
+        "category": "DevImpact"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "devimpact.refresh",
+          "when": "view == devimpact.impact",
+          "group": "navigation@1"
+        },
+        {
+          "command": "devimpact.analyzeChanges",
+          "when": "view == devimpact.impact",
+          "group": "navigation@2"
+        },
+        {
+          "command": "devimpact.runTests",
+          "when": "view == devimpact.impact",
+          "group": "navigation@3"
+        },
+        {
+          "command": "devimpact.openReport",
+          "when": "view == devimpact.impact",
+          "group": "navigation@4"
+        },
+        {
+          "command": "devimpact.analyzeStaged",
+          "when": "view == devimpact.impact",
+          "group": "more@1"
+        },
+        {
+          "command": "devimpact.analyzeBranch",
+          "when": "view == devimpact.impact",
+          "group": "more@2"
+        },
+        {
+          "command": "devimpact.copyReport",
+          "when": "view == devimpact.impact",
+          "group": "more@3"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "devimpact.runTestCommand",
+          "when": "view == devimpact.impact && viewItem == testCommand",
+          "group": "inline"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "devimpact.analyzeSymbol",
+          "group": "navigation@91"
+        },
+        {
+          "command": "devimpact.analyzeFile",
+          "group": "navigation@92"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "devimpact.analyzeFile",
+          "when": "!explorerResourceIsFolder",
+          "group": "navigation@91"
+        }
+      ],
+      "scm/title": [
+        {
+          "command": "devimpact.analyzeChanges",
+          "group": "navigation@50",
+          "when": "scmProvider == git"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "devimpact.openEvidence",
+          "when": "false"
+        },
+        {
+          "command": "devimpact.runTestCommand",
+          "when": "false"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "DevImpact",
+      "properties": {
+        "devimpact.codeLens": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show \"N dependents\" CodeLens above functions and classes that other files use."
+        },
+        "devimpact.autoRefresh": {
+          "type": "boolean",
+          "default": true,
+          "description": "Re-run the last analysis (debounced) when you save a file."
+        },
+        "devimpact.maxDepth": {
+          "type": "number",
+          "default": 6,
+          "minimum": 1,
+          "maximum": 20,
+          "description": "How many dependency hops to follow for indirect impact."
+        },
+        "devimpact.baseRef": {
+          "type": "string",
+          "default": "",
+          "description": "Base branch for \"Analyse Branch\" (empty = auto-detect origin/main, main, master\u2026)."
+        },
+        "devimpact.exclude": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Extra glob patterns to exclude from indexing."
+        },
+        "devimpact.maxFiles": {
+          "type": "number",
+          "default": 20000,
+          "description": "Maximum number of files to index."
+        }
+      }
+    },
+    "languageModelTools": [
+      {
+        "name": "devimpact_analyzeChanges",
+        "displayName": "DevImpact: Analyse change impact",
+        "toolReferenceName": "changeImpact",
+        "canBeReferencedInPrompt": true,
+        "icon": "$(pulse)",
+        "modelDescription": "Analyses the impact of code changes in the open repository: which files depend on the changed code (directly and transitively, with the symbols they use), an impact score, and which tests should be run (with ready-to-run commands). Use before committing, reviewing or refactoring.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "scope": {
+              "type": "string",
+              "enum": [
+                "working",
+                "staged",
+                "branch",
+                "file"
+              ],
+              "description": "working = all uncommitted changes (default); staged = only staged; branch = current branch vs base; file = a single file"
+            },
+            "file": {
+              "type": "string",
+              "description": "Repository-relative file path when scope is file"
+            },
+            "symbol": {
+              "type": "string",
+              "description": "Optional function/class name inside the file"
+            }
+          }
+        }
+      }
+    ]
+  },
+  "scripts": {
+    "build": "node esbuild.js",
+    "watch": "node esbuild.js --watch",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "package": "npm run typecheck && node esbuild.js --production && vsce package --no-dependencies"
+  },
+  "dependencies": {
+    "@devsuite/core": "0.1.0",
+    "@devsuite/vscode-common": "0.1.0"
+  },
+  "devDependencies": {
+    "@types/vscode": "~1.95.0",
+    "@vscode/vsce": "^3.2.1"
+  }
+}

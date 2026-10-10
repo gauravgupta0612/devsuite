@@ -1,0 +1,263 @@
+{
+  "name": "codeguard",
+  "displayName": "CodeGuard \u2014 Pre-Commit Risk Scanner",
+  "description": "A prioritised risk report for your changes before you commit: leaked secrets, injection-prone code, broken imports, removed APIs, missing tests, wide blast radius, risky config and IBM i pitfalls (DDS level checks, hard-coded libraries, MONMSG CPF0000). Optional git pre-commit hook.",
+  "version": "0.1.0",
+  "publisher": "gauravgupta0612",
+  "author": {
+    "name": "gauravgupta0612",
+    "url": "https://github.com/gauravgupta0612"
+  },
+  "license": "MIT",
+  "icon": "media/logo.png",
+  "galleryBanner": {
+    "color": "#3d1f1f",
+    "theme": "dark"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gauravgupta0612/devsuite.git",
+    "directory": "extensions/codeguard"
+  },
+  "bugs": {
+    "url": "https://github.com/gauravgupta0612/devsuite/issues"
+  },
+  "homepage": "https://github.com/gauravgupta0612/devsuite/tree/main/extensions/codeguard#readme",
+  "engines": {
+    "vscode": "^1.95.0"
+  },
+  "categories": [
+    "Linters",
+    "Testing",
+    "Other",
+    "AI"
+  ],
+  "keywords": [
+    "pre-commit",
+    "code review",
+    "security",
+    "secrets",
+    "risk",
+    "git hook",
+    "static analysis",
+    "ibm i",
+    "rpgle"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "views": {
+      "scm": [
+        {
+          "id": "codeguard.report",
+          "name": "CodeGuard Risk",
+          "icon": "media/activity.svg"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "codeguard.report",
+        "contents": "Review your changes for risk before you commit.\n[Scan Staged Changes](command:codeguard.scanStaged)\n[Scan All Uncommitted Changes](command:codeguard.scanWorking)\n[Install Git Pre-Commit Hook](command:codeguard.installHook)"
+      }
+    ],
+    "commands": [
+      {
+        "command": "codeguard.scanStaged",
+        "title": "Scan Staged Changes",
+        "category": "CodeGuard",
+        "icon": "$(shield)"
+      },
+      {
+        "command": "codeguard.scanWorking",
+        "title": "Scan All Uncommitted Changes",
+        "category": "CodeGuard",
+        "icon": "$(git-commit)"
+      },
+      {
+        "command": "codeguard.scanBranch",
+        "title": "Scan Branch vs Base\u2026",
+        "category": "CodeGuard",
+        "icon": "$(git-branch)"
+      },
+      {
+        "command": "codeguard.openReport",
+        "title": "Open Risk Report",
+        "category": "CodeGuard",
+        "icon": "$(book)"
+      },
+      {
+        "command": "codeguard.copyReport",
+        "title": "Copy Risk Report (Markdown)",
+        "category": "CodeGuard",
+        "icon": "$(copy)"
+      },
+      {
+        "command": "codeguard.installHook",
+        "title": "Install Git Pre-Commit Hook",
+        "category": "CodeGuard",
+        "icon": "$(plug)"
+      },
+      {
+        "command": "codeguard.uninstallHook",
+        "title": "Remove Git Pre-Commit Hook",
+        "category": "CodeGuard"
+      },
+      {
+        "command": "codeguard.clear",
+        "title": "Clear Findings",
+        "category": "CodeGuard",
+        "icon": "$(clear-all)"
+      },
+      {
+        "command": "codeguard.openEvidence",
+        "title": "Open",
+        "category": "CodeGuard"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "codeguard.scanStaged",
+          "when": "view == codeguard.report",
+          "group": "navigation@1"
+        },
+        {
+          "command": "codeguard.scanWorking",
+          "when": "view == codeguard.report",
+          "group": "navigation@2"
+        },
+        {
+          "command": "codeguard.openReport",
+          "when": "view == codeguard.report",
+          "group": "navigation@3"
+        },
+        {
+          "command": "codeguard.scanBranch",
+          "when": "view == codeguard.report",
+          "group": "more@1"
+        },
+        {
+          "command": "codeguard.copyReport",
+          "when": "view == codeguard.report",
+          "group": "more@2"
+        },
+        {
+          "command": "codeguard.installHook",
+          "when": "view == codeguard.report",
+          "group": "more@3"
+        },
+        {
+          "command": "codeguard.uninstallHook",
+          "when": "view == codeguard.report",
+          "group": "more@4"
+        },
+        {
+          "command": "codeguard.clear",
+          "when": "view == codeguard.report",
+          "group": "more@5"
+        }
+      ],
+      "scm/title": [
+        {
+          "command": "codeguard.scanStaged",
+          "group": "navigation@51",
+          "when": "scmProvider == git"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "codeguard.openEvidence",
+          "when": "false"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "CodeGuard",
+      "properties": {
+        "codeguard.autoScan": {
+          "type": "boolean",
+          "default": true,
+          "description": "Re-scan automatically (debounced) when you stage files or save."
+        },
+        "codeguard.showDiagnostics": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show findings in the Problems panel and as squiggles on the changed lines."
+        },
+        "codeguard.hookFailOn": {
+          "type": "string",
+          "enum": [
+            "critical",
+            "high",
+            "medium",
+            "never"
+          ],
+          "default": "critical",
+          "description": "Pre-commit hook blocks the commit when the risk level reaches this level (bypass once with git commit --no-verify)."
+        },
+        "codeguard.disabledRules": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Rule ids to ignore, e.g. [\"q-todo\", \"q-console\"]. Add `codeguard-ignore` in a line comment to ignore a single line."
+        },
+        "codeguard.exclude": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Extra glob patterns to exclude from indexing."
+        },
+        "codeguard.maxFiles": {
+          "type": "number",
+          "default": 20000,
+          "description": "Maximum number of files to index."
+        }
+      }
+    },
+    "languageModelTools": [
+      {
+        "name": "codeguard_reviewChanges",
+        "displayName": "CodeGuard: Review changes for risk",
+        "toolReferenceName": "riskReview",
+        "canBeReferencedInPrompt": true,
+        "icon": "$(shield)",
+        "modelDescription": "Scans the git changes in the open repository and returns a prioritised risk report: leaked secrets, injection-prone code, deleted files still referenced, removed public APIs, changes without tests, wide blast radius, risky config/CI/migration changes and IBM i specific pitfalls. Use before committing or when reviewing a change.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "scope": {
+              "type": "string",
+              "enum": [
+                "staged",
+                "working",
+                "branch"
+              ],
+              "description": "staged (default) = what git commit would record; working = all uncommitted changes; branch = branch vs base"
+            }
+          }
+        }
+      }
+    ]
+  },
+  "scripts": {
+    "build": "node esbuild.js",
+    "watch": "node esbuild.js --watch",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "package": "npm run typecheck && node esbuild.js --production && vsce package --no-dependencies"
+  },
+  "dependencies": {
+    "@devsuite/core": "0.1.0",
+    "@devsuite/vscode-common": "0.1.0"
+  },
+  "devDependencies": {
+    "@types/vscode": "~1.95.0",
+    "@vscode/vsce": "^3.2.1"
+  }
+}

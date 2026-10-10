@@ -1,0 +1,8 @@
+{
+  "name": "@devsuite/vscode-common",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Shared VS Code plumbing (index service, evidence navigation) for DevSuite extensions. Bundled from source by each extension.",
+  "main": "src/index.ts",
+  "license": "MIT"
+}

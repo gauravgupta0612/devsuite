@@ -25,6 +25,12 @@ export function parseJavaScript(src: string, filePath: string): ParseResult {
   eachMatch(/^[ \t]*(export\s+)?(?:const|let|var)\s+([A-Za-z_$][\w$]*)\s*(?::[^=]+)?=\s*(?:async\s+)?(?:function\b|\([^)]*\)\s*(?::[^=]+)?=>|[A-Za-z_$][\w$]*\s*=>)/m, code,
     m => sym(m[2], 'function', m.index, !!m[1]));
 
+  // class methods (indented, not control-flow keywords)
+  eachMatch(/^[ \t]+((?:(?:public|private|protected|static|async|readonly|override|abstract|get|set)\s+)*)\*?\s*([A-Za-z_$][\w$]*)\s*(?:<[^>]*>)?\s*\(([^()]|\([^()]*\))*\)\s*(?::\s*[^={;]+)?\{/m, code, m => {
+    if (/^(if|for|while|switch|catch|function|return|with|else|do|try|constructor|super|new|typeof|await)$/.test(m[2])) return;
+    symbols.push({ name: m[2], kind: 'method', line: ln(m.index), exported: !/private/.test(m[1]) });
+  });
+
   let selfEntry: ParseResult['selfEntry'];
   if (src.startsWith('#!')) selfEntry = { file: filePath, line: 1, note: 'Executable script (shebang)' };
   else {

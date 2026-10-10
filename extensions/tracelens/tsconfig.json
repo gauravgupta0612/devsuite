@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "out",
+    "rootDir": "../..",
+    "types": ["node", "vscode"],
+    "baseUrl": ".",
+    "paths": {
+      "@devsuite/core": ["../../packages/core/src/index.ts"],
+      "@devsuite/vscode-common": ["../../packages/vscode-common/src/index.ts"]
+    }
+  },
+  "include": ["src"]
+}

@@ -5,9 +5,77 @@
       "name": "Run RepoPilot",
       "type": "extensionHost",
       "request": "launch",
-      "args": ["--extensionDevelopmentPath=${workspaceFolder}/extensions/repopilot"],
-      "outFiles": ["${workspaceFolder}/extensions/repopilot/dist/**/*.js"],
-      "preLaunchTask": "build repopilot"
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}/extensions/repopilot"
+      ],
+      "outFiles": [
+        "${workspaceFolder}/extensions/repopilot/dist/**/*.js"
+      ],
+      "preLaunchTask": "build all"
+    },
+    {
+      "name": "Run DevImpact",
+      "type": "extensionHost",
+      "request": "launch",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}/extensions/devimpact"
+      ],
+      "outFiles": [
+        "${workspaceFolder}/extensions/devimpact/dist/**/*.js"
+      ],
+      "preLaunchTask": "build all"
+    },
+    {
+      "name": "Run CodeGuard",
+      "type": "extensionHost",
+      "request": "launch",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}/extensions/codeguard"
+      ],
+      "outFiles": [
+        "${workspaceFolder}/extensions/codeguard/dist/**/*.js"
+      ],
+      "preLaunchTask": "build all"
+    },
+    {
+      "name": "Run TraceLens",
+      "type": "extensionHost",
+      "request": "launch",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}/extensions/tracelens"
+      ],
+      "outFiles": [
+        "${workspaceFolder}/extensions/tracelens/dist/**/*.js"
+      ],
+      "preLaunchTask": "build all"
+    },
+    {
+      "name": "Run BugTrail",
+      "type": "extensionHost",
+      "request": "launch",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}/extensions/bugtrail"
+      ],
+      "outFiles": [
+        "${workspaceFolder}/extensions/bugtrail/dist/**/*.js"
+      ],
+      "preLaunchTask": "build all"
+    },
+    {
+      "name": "Run all DevSuite extensions",
+      "type": "extensionHost",
+      "request": "launch",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}/extensions/repopilot",
+        "--extensionDevelopmentPath=${workspaceFolder}/extensions/devimpact",
+        "--extensionDevelopmentPath=${workspaceFolder}/extensions/codeguard",
+        "--extensionDevelopmentPath=${workspaceFolder}/extensions/tracelens",
+        "--extensionDevelopmentPath=${workspaceFolder}/extensions/bugtrail"
+      ],
+      "outFiles": [
+        "${workspaceFolder}/extensions/*/dist/**/*.js"
+      ],
+      "preLaunchTask": "build all"
     }
   ]
 }

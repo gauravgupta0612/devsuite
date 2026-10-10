@@ -1,0 +1,123 @@
+name: Release BugTrail
+
+# Releases automatically whenever extensions/bugtrail/package.json on main has a version
+# that has not been tagged yet. You can also run it by hand (Actions -> Release -> Run workflow)
+# and pick patch/minor/major: the workflow bumps the version, commits it as gauravgupta0612,
+# tags it (bugtrail-vX.Y.Z), builds the VSIX, creates the GitHub Release and publishes to the Marketplace.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'extensions/bugtrail/**'
+      - 'packages/core/**'
+      - 'packages/vscode-common/**'
+      - '.github/workflows/release-bugtrail.yml'
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: Version bump
+        type: choice
+        options: [patch, minor, major, none]
+        default: patch
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-bugtrail
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    # Don't re-trigger on the release commit this workflow pushes itself.
+    if: ${{ !startsWith(github.event.head_commit.message, 'chore(release)') }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Configure git author
+        run: |
+          git config user.name "gauravgupta0612"
+          git config user.email "gauravgupta0612@users.noreply.github.com"
+
+      - run: npm ci
+
+      - name: Bump version (manual run only)
+        if: github.event_name == 'workflow_dispatch' && inputs.bump != 'none'
+        run: |
+          npm version ${{ inputs.bump }} --no-git-tag-version --workspace bugtrail
+          VERSION=$(node -p "require('./extensions/bugtrail/package.json').version")
+          DATE=$(date -u +%Y-%m-%d)
+          awk -v v="$VERSION" -v d="$DATE" 'NR==1{print; print ""; print "## " v " — " d; print "- See the GitHub release notes for the full list of changes."; next} {print}' \
+            extensions/bugtrail/CHANGELOG.md > /tmp/CHANGELOG.md && mv /tmp/CHANGELOG.md extensions/bugtrail/CHANGELOG.md
+          git add extensions/bugtrail/package.json extensions/bugtrail/CHANGELOG.md package-lock.json
+          git commit -m "chore(release): bugtrail v$VERSION"
+          git push origin HEAD:${{ github.ref_name }}
+
+      - name: Read version and check tag
+        id: ver
+        run: |
+          VERSION=$(node -p "require('./extensions/bugtrail/package.json').version")
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          if git rev-parse "bugtrail-v$VERSION" >/dev/null 2>&1; then
+            echo "Tag bugtrail-v$VERSION already exists - nothing to release."
+            echo "release=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "release=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Test
+        if: steps.ver.outputs.release == 'true'
+        run: npm test
+
+      - name: Package VSIX
+        if: steps.ver.outputs.release == 'true'
+        run: npm run package:bugtrail
+
+      - name: Tag
+        if: steps.ver.outputs.release == 'true'
+        run: |
+          git tag -a "bugtrail-v${{ steps.ver.outputs.version }}" -m "BugTrail v${{ steps.ver.outputs.version }}"
+          git push origin "bugtrail-v${{ steps.ver.outputs.version }}"
+
+      - name: GitHub Release
+        if: steps.ver.outputs.release == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "bugtrail-v${{ steps.ver.outputs.version }}" \
+            extensions/bugtrail/bugtrail-${{ steps.ver.outputs.version }}.vsix \
+            --title "BugTrail v${{ steps.ver.outputs.version }}" \
+            --generate-notes
+
+      - name: Publish to VS Code Marketplace
+        if: steps.ver.outputs.release == 'true'
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+        working-directory: extensions/bugtrail
+        run: |
+          if [ -z "$VSCE_PAT" ]; then
+            echo "::warning::VSCE_PAT secret not set - skipping Marketplace publish."
+            exit 0
+          fi
+          npx vsce publish --no-dependencies --packagePath bugtrail-${{ steps.ver.outputs.version }}.vsix -p "$VSCE_PAT"
+
+      - name: Publish to Open VSX
+        if: steps.ver.outputs.release == 'true'
+        env:
+          OVSX_PAT: ${{ secrets.OVSX_PAT }}
+        working-directory: extensions/bugtrail
+        run: |
+          if [ -z "$OVSX_PAT" ]; then
+            echo "OVSX_PAT secret not set - skipping Open VSX publish."
+            exit 0
+          fi
+          npx --yes ovsx publish bugtrail-${{ steps.ver.outputs.version }}.vsix -p "$OVSX_PAT"

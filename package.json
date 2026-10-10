@@ -8,10 +8,15 @@
     "extensions/*"
   ],
   "scripts": {
-    "build": "npm run build -w @devsuite/core && npm run build -w repopilot",
-    "test": "npm test -w @devsuite/core",
+    "build": "npm run build -w @devsuite/core && npm run build -w repopilot -w devimpact -w codeguard -w tracelens -w bugtrail",
+    "test": "npm test -w @devsuite/core && npm test -w bugtrail",
+    "typecheck": "npm run typecheck -w repopilot -w devimpact -w codeguard -w tracelens -w bugtrail",
     "package:repopilot": "npm run package -w repopilot",
-    "typecheck": "npm run typecheck -w repopilot"
+    "package:devimpact": "npm run package -w devimpact",
+    "package:codeguard": "npm run package -w codeguard",
+    "package:tracelens": "npm run package -w tracelens",
+    "package:bugtrail": "npm run package -w bugtrail",
+    "package:all": "npm run package -w repopilot -w devimpact -w codeguard -w tracelens -w bugtrail"
   },
   "devDependencies": {
     "typescript": "^5.4.5",

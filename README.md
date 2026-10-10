@@ -8,42 +8,46 @@ Marketplace publisher **gauravgupta0612**.
 
 ```
 devsuite/
-├── .github/workflows/       ci.yml · release-repopilot.yml (one release workflow per extension)
+├── .github/workflows/        ci.yml + one release-<extension>.yml per extension
 ├── packages/
-│   └── core/                 @devsuite/core — the shared analysis engine (no VS Code dependency)
-│       ├── src/scanner.ts      repository walk, excludes, .gitignore
-│       ├── src/languages.ts    language detection (incl. IBM i source-file folders)
-│       ├── src/parsers/        JS/TS · Python · Java/Kotlin · Go · C# · RPG/CL/DDS/SQL/COBOL
-│       ├── src/resolver.ts     turns references into file → file edges
-│       ├── src/graph.ts        dependency graph, transitive dependents, cycles, modules
-│       ├── src/detectors.ts    frameworks, build systems, commands, external deps
-│       ├── src/indexer.ts      indexRepository() — puts it all together
-│       ├── src/guide.ts        onboarding-guide generator (evidence-linked Markdown)
-│       ├── src/search.ts       local relevance ranking for questions
-│       └── test/               node:test suites (TS, Python, Java, IBM i fixtures)
-└── extensions/
-    └── repopilot/            Extension #1 — Project Understanding Assistant
+│   ├── core/                 @devsuite/core — shared analysis engine (no VS Code dependency)
+│   │   ├── scanner, languages, parsers/   indexing (JS/TS, Python, Java/Kotlin, Go, C#, IBM i RPG/CL/DDS/SQL/COBOL)
+│   │   ├── resolver, graph, detectors     dependency graph, modules, frameworks, build commands
+│   │   ├── git, impact                    git diff parsing + change-impact analysis       (DevImpact)
+│   │   ├── risk                           risk rules + scoring                            (CodeGuard)
+│   │   ├── routes                         endpoint discovery + request-flow tracing       (TraceLens)
+│   │   ├── errors                         error extraction + signatures                   (BugTrail)
+│   │   └── guide, search                  onboarding guide + local search                 (RepoPilot)
+│   └── vscode-common/        shared VS Code plumbing (index service, navigation)
+├── extensions/
+│   ├── repopilot/            Project understanding
+│   ├── devimpact/            Change impact analysis
+│   ├── codeguard/            Pre-commit risk scanner (+ standalone CLI / git hook)
+│   ├── tracelens/            API flow explorer
+│   └── bugtrail/             Debugging memory
+└── scripts/esbuild-extension.js   one bundler config for every extension
 ```
 
-## Build order (roadmap)
+## Extensions
 
-| # | Extension | Status | Reuses from core |
-|---|---|---|---|
-| 1 | **RepoPilot** — project understanding | ✅ v0.1.0 | everything |
-| 2 | **DevImpact** — change impact analysis | next | `DependencyGraph.transitiveDependents`, symbols, git diff |
-| 3 | **CodeGuard** — pre-commit risk report | planned | DevImpact + hotspots + test mapping |
-| 4 | **TraceLens** — API flow explorer | planned | framework detectors + route/controller parsers |
-| 5 | **BugTrail** — debugging memory | planned | separate workflow (debug-session events) |
+| Extension | What it does | Marketplace ID |
+|---|---|---|
+| **RepoPilot** | Architecture, entry points, build commands, modules, dependency map, onboarding guide | `gauravgupta0612.repopilot` |
+| **DevImpact** | What a change affects, impact score, which tests to run | `gauravgupta0612.devimpact` |
+| **CodeGuard** | Prioritised risk report for changes (secrets, security, regressions, tests, config, IBM i); pre-commit hook | `gauravgupta0612.codeguard` |
+| **TraceLens** | All API endpoints; trace a request to database and external calls | `gauravgupta0612.tracelens` |
+| **BugTrail** | Searchable history of errors, attempts and fixes; warns when a fixed bug returns | `gauravgupta0612.bugtrail` |
 
 ## Develop
 
 ```bash
 npm install                 # installs all workspaces
-npm test                    # builds and tests @devsuite/core
-npm run build               # builds core + RepoPilot
+npm test                    # engine + BugTrail store tests
+npm run build               # builds core + all extensions
+npm run package:all         # one .vsix per extension
 ```
 
-Open this `devsuite` folder in VS Code and press **F5** ("Run RepoPilot") to launch an Extension Development Host.
+Open this `devsuite` folder in VS Code and press **F5** and pick "Run <Extension>" or "Run all DevSuite extensions" to launch an Extension Development Host.
 
 ## Package locally
 
@@ -55,10 +59,10 @@ code --install-extension extensions/repopilot/repopilot-<version>.vsix
 ## Automatic releases
 
 - **CI** (`ci.yml`) builds and tests every push and pull request on Linux and Windows and uploads the `.vsix`.
-- **Release RepoPilot** (`release-repopilot.yml`) runs on pushes to `main` that touch `extensions/repopilot/` or
-  `packages/core/`. If the version in `extensions/repopilot/package.json` has no `repopilot-v<version>` tag yet, it
+- **Release <Extension>** (`release-<extension>.yml`, one per extension) runs on pushes to `main` that touch that extension or the shared
+  packages. If the extension's version has no `<extension>-v<version>` tag yet, it
   tests, packages, tags, creates a GitHub Release with the `.vsix` attached and publishes to the VS Code Marketplace.
-- To bump and release in one click: **Actions → Release RepoPilot → Run workflow → patch / minor / major**. The
+- To bump and release in one click: **Actions → Release <Extension> → Run workflow → patch / minor / major**. The
   version-bump commit is authored as `gauravgupta0612`.
 - Tags are per extension (`repopilot-v0.1.0`, later `devimpact-v0.1.0`, …) so each extension releases independently.
 

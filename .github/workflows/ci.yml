@@ -20,14 +20,14 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
-      - name: Test shared engine (@devsuite/core)
+      - name: Test shared engine and BugTrail store
         run: npm test
-      - name: Type-check and package RepoPilot
-        run: npm run package:repopilot
+      - name: Type-check and package all extensions
+        run: npm run package:all
       - name: Upload VSIX
         if: matrix.os == 'ubuntu-latest'
         uses: actions/upload-artifact@v4
         with:
-          name: repopilot-vsix
-          path: extensions/repopilot/*.vsix
+          name: devsuite-vsix
+          path: extensions/*/*.vsix
           if-no-files-found: error

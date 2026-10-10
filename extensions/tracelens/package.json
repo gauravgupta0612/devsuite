@@ -1,0 +1,245 @@
+{
+  "name": "tracelens",
+  "displayName": "TraceLens \u2014 API Flow Explorer",
+  "description": "See every API endpoint in your workspace and trace a request through routes, controllers, services and repositories down to database queries and outgoing HTTP calls, without opening every file. Express, NestJS, Fastify, Flask, FastAPI, Django, Spring, ASP.NET and Go.",
+  "version": "0.1.0",
+  "publisher": "gauravgupta0612",
+  "author": {
+    "name": "gauravgupta0612",
+    "url": "https://github.com/gauravgupta0612"
+  },
+  "license": "MIT",
+  "icon": "media/logo.png",
+  "galleryBanner": {
+    "color": "#13324a",
+    "theme": "dark"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gauravgupta0612/devsuite.git",
+    "directory": "extensions/tracelens"
+  },
+  "bugs": {
+    "url": "https://github.com/gauravgupta0612/devsuite/issues"
+  },
+  "homepage": "https://github.com/gauravgupta0612/devsuite/tree/main/extensions/tracelens#readme",
+  "engines": {
+    "vscode": "^1.95.0"
+  },
+  "categories": [
+    "Visualization",
+    "Programming Languages",
+    "Other",
+    "AI"
+  ],
+  "keywords": [
+    "api",
+    "endpoints",
+    "request flow",
+    "call graph",
+    "express",
+    "spring",
+    "fastapi",
+    "flask",
+    "nestjs",
+    "architecture"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "tracelens",
+          "title": "TraceLens",
+          "icon": "media/activity.svg"
+        }
+      ]
+    },
+    "views": {
+      "tracelens": [
+        {
+          "id": "tracelens.endpoints",
+          "name": "API Endpoints"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "tracelens.endpoints",
+        "contents": "No API endpoints found yet.\n[Scan Workspace](command:tracelens.refresh)\nTraceLens recognises Express, Koa, Fastify, NestJS, Flask, FastAPI, Django, Spring, ASP.NET and Go (net/http, gin, echo, chi) routes."
+      }
+    ],
+    "commands": [
+      {
+        "command": "tracelens.refresh",
+        "title": "Rescan Endpoints",
+        "category": "TraceLens",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "tracelens.traceEndpoint",
+        "title": "Trace Endpoint\u2026",
+        "category": "TraceLens",
+        "icon": "$(debug-alt)"
+      },
+      {
+        "command": "tracelens.trace",
+        "title": "Trace Request Flow",
+        "category": "TraceLens",
+        "icon": "$(type-hierarchy-sub)"
+      },
+      {
+        "command": "tracelens.copyMermaid",
+        "title": "Copy Flow as Mermaid Diagram",
+        "category": "TraceLens",
+        "icon": "$(copy)"
+      },
+      {
+        "command": "tracelens.groupBy",
+        "title": "Group Endpoints By\u2026",
+        "category": "TraceLens",
+        "icon": "$(list-tree)"
+      },
+      {
+        "command": "tracelens.openEvidence",
+        "title": "Open",
+        "category": "TraceLens"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "tracelens.refresh",
+          "when": "view == tracelens.endpoints",
+          "group": "navigation@1"
+        },
+        {
+          "command": "tracelens.traceEndpoint",
+          "when": "view == tracelens.endpoints",
+          "group": "navigation@2"
+        },
+        {
+          "command": "tracelens.groupBy",
+          "when": "view == tracelens.endpoints",
+          "group": "navigation@3"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "tracelens.trace",
+          "when": "view == tracelens.endpoints && viewItem == endpoint",
+          "group": "inline"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "tracelens.openEvidence",
+          "when": "false"
+        },
+        {
+          "command": "tracelens.trace",
+          "when": "false"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "TraceLens",
+      "properties": {
+        "tracelens.maxDepth": {
+          "type": "number",
+          "default": 5,
+          "minimum": 1,
+          "maximum": 12,
+          "description": "How many call levels to follow from the handler."
+        },
+        "tracelens.codeLens": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show a \"Trace request flow\" CodeLens above route definitions."
+        },
+        "tracelens.groupBy": {
+          "type": "string",
+          "enum": [
+            "path",
+            "file",
+            "method"
+          ],
+          "default": "path",
+          "description": "How to group the endpoint list."
+        },
+        "tracelens.exclude": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Extra glob patterns to exclude from indexing."
+        },
+        "tracelens.maxFiles": {
+          "type": "number",
+          "default": 20000,
+          "description": "Maximum number of files to index."
+        }
+      }
+    },
+    "languageModelTools": [
+      {
+        "name": "tracelens_listEndpoints",
+        "displayName": "TraceLens: List API endpoints",
+        "toolReferenceName": "apiEndpoints",
+        "canBeReferencedInPrompt": true,
+        "icon": "$(globe)",
+        "modelDescription": "Lists the HTTP API endpoints defined in the open repository (method, path, framework, handler, file and line).",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "filter": {
+              "type": "string",
+              "description": "Optional substring to filter paths"
+            }
+          }
+        }
+      },
+      {
+        "name": "tracelens_traceEndpoint",
+        "displayName": "TraceLens: Trace request flow",
+        "toolReferenceName": "traceRequest",
+        "canBeReferencedInPrompt": true,
+        "icon": "$(type-hierarchy-sub)",
+        "modelDescription": "Traces one HTTP endpoint through its handler, services and repositories down to database queries and outgoing HTTP calls, returning the call tree with file and line for each step.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "method": {
+              "type": "string"
+            },
+            "path": {
+              "type": "string",
+              "description": "Route path as listed by tracelens_listEndpoints, e.g. /api/users/:id"
+            }
+          },
+          "required": [
+            "path"
+          ]
+        }
+      }
+    ]
+  },
+  "scripts": {
+    "build": "node esbuild.js",
+    "watch": "node esbuild.js --watch",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "package": "npm run typecheck && node esbuild.js --production && vsce package --no-dependencies"
+  },
+  "dependencies": {
+    "@devsuite/core": "0.1.0",
+    "@devsuite/vscode-common": "0.1.0"
+  },
+  "devDependencies": {
+    "@types/vscode": "~1.95.0",
+    "@vscode/vsce": "^3.2.1"
+  }
+}
