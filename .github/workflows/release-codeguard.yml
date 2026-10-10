@@ -53,7 +53,7 @@ jobs:
       - name: Bump version (manual run only)
         if: github.event_name == 'workflow_dispatch' && inputs.bump != 'none'
         run: |
-          npm version ${{ inputs.bump }} --no-git-tag-version --workspace codeguard
+          npm version ${{ inputs.bump }} --no-git-tag-version --workspace devsuite-codeguard
           VERSION=$(node -p "require('./extensions/codeguard/package.json').version")
           DATE=$(date -u +%Y-%m-%d)
           awk -v v="$VERSION" -v d="$DATE" 'NR==1{print; print ""; print "## " v " — " d; print "- See the GitHub release notes for the full list of changes."; next} {print}' \
@@ -94,7 +94,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh release create "codeguard-v${{ steps.ver.outputs.version }}" \
-            extensions/codeguard/codeguard-${{ steps.ver.outputs.version }}.vsix \
+            extensions/codeguard/devsuite-codeguard-${{ steps.ver.outputs.version }}.vsix \
             --title "CodeGuard v${{ steps.ver.outputs.version }}" \
             --generate-notes
 
@@ -108,7 +108,7 @@ jobs:
             echo "::warning::VSCE_PAT secret not set - skipping Marketplace publish."
             exit 0
           fi
-          npx vsce publish --no-dependencies --packagePath codeguard-${{ steps.ver.outputs.version }}.vsix -p "$VSCE_PAT"
+          npx vsce publish --no-dependencies --packagePath devsuite-codeguard-${{ steps.ver.outputs.version }}.vsix -p "$VSCE_PAT"
 
       - name: Publish to Open VSX
         if: steps.ver.outputs.release == 'true'
@@ -120,4 +120,4 @@ jobs:
             echo "OVSX_PAT secret not set - skipping Open VSX publish."
             exit 0
           fi
-          npx --yes ovsx publish codeguard-${{ steps.ver.outputs.version }}.vsix -p "$OVSX_PAT"
+          npx --yes ovsx publish devsuite-codeguard-${{ steps.ver.outputs.version }}.vsix -p "$OVSX_PAT"

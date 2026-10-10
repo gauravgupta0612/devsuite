@@ -263,7 +263,7 @@
     "watch": "node esbuild.js --watch",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "package": "npm run typecheck && node esbuild.js --production && vsce package --no-dependencies",
-    "test": "esbuild test/entry.ts --bundle --platform=node --format=cjs --outfile=out-test/store.js --alias:@devsuite/core=../../packages/core/src/index.ts --log-level=error && node --test test/store.test.js"
+    "test": "node test/build.js && node --test test/store.test.js"
   },
   "dependencies": {
     "@devsuite/core": "0.1.0"

@@ -34,8 +34,8 @@ devsuite/
 |---|---|---|
 | **RepoPilot** | Architecture, entry points, build commands, modules, dependency map, onboarding guide | `gauravgupta0612.repopilot` |
 | **DevImpact** | What a change affects, impact score, which tests to run | `gauravgupta0612.devimpact` |
-| **CodeGuard** | Prioritised risk report for changes (secrets, security, regressions, tests, config, IBM i); pre-commit hook | `gauravgupta0612.codeguard` |
-| **TraceLens** | All API endpoints; trace a request to database and external calls | `gauravgupta0612.tracelens` |
+| **CodeGuard** | Prioritised risk report for changes (secrets, security, regressions, tests, config, IBM i); pre-commit hook | `gauravgupta0612.devsuite-codeguard` |
+| **TraceLens** | All API endpoints; trace a request to database and external calls | `gauravgupta0612.devsuite-tracelens` |
 | **BugTrail** | Searchable history of errors, attempts and fixes; warns when a fixed bug returns | `gauravgupta0612.bugtrail` |
 
 ## Develop

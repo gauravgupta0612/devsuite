@@ -1,8 +1,8 @@
 {
-  "name": "tracelens",
-  "displayName": "TraceLens \u2014 API Flow Explorer",
+  "name": "devsuite-tracelens",
+  "displayName": "DevSuite TraceLens \u2014 API Flow Explorer",
   "description": "See every API endpoint in your workspace and trace a request through routes, controllers, services and repositories down to database queries and outgoing HTTP calls, without opening every file. Express, NestJS, Fastify, Flask, FastAPI, Django, Spring, ASP.NET and Go.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "gauravgupta0612",
   "author": {
     "name": "gauravgupta0612",

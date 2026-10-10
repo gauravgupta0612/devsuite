@@ -1,8 +1,8 @@
 {
-  "name": "codeguard",
-  "displayName": "CodeGuard \u2014 Pre-Commit Risk Scanner",
+  "name": "devsuite-codeguard",
+  "displayName": "DevSuite CodeGuard \u2014 Pre-Commit Risk Scanner",
   "description": "A prioritised risk report for your changes before you commit: leaked secrets, injection-prone code, broken imports, removed APIs, missing tests, wide blast radius, risky config and IBM i pitfalls (DDS level checks, hard-coded libraries, MONMSG CPF0000). Optional git pre-commit hook.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "gauravgupta0612",
   "author": {
     "name": "gauravgupta0612",

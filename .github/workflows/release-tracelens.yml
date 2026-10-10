@@ -53,7 +53,7 @@ jobs:
       - name: Bump version (manual run only)
         if: github.event_name == 'workflow_dispatch' && inputs.bump != 'none'
         run: |
-          npm version ${{ inputs.bump }} --no-git-tag-version --workspace tracelens
+          npm version ${{ inputs.bump }} --no-git-tag-version --workspace devsuite-tracelens
           VERSION=$(node -p "require('./extensions/tracelens/package.json').version")
           DATE=$(date -u +%Y-%m-%d)
           awk -v v="$VERSION" -v d="$DATE" 'NR==1{print; print ""; print "## " v " — " d; print "- See the GitHub release notes for the full list of changes."; next} {print}' \
@@ -94,7 +94,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh release create "tracelens-v${{ steps.ver.outputs.version }}" \
-            extensions/tracelens/tracelens-${{ steps.ver.outputs.version }}.vsix \
+            extensions/tracelens/devsuite-tracelens-${{ steps.ver.outputs.version }}.vsix \
             --title "TraceLens v${{ steps.ver.outputs.version }}" \
             --generate-notes
 
@@ -108,7 +108,7 @@ jobs:
             echo "::warning::VSCE_PAT secret not set - skipping Marketplace publish."
             exit 0
           fi
-          npx vsce publish --no-dependencies --packagePath tracelens-${{ steps.ver.outputs.version }}.vsix -p "$VSCE_PAT"
+          npx vsce publish --no-dependencies --packagePath devsuite-tracelens-${{ steps.ver.outputs.version }}.vsix -p "$VSCE_PAT"
 
       - name: Publish to Open VSX
         if: steps.ver.outputs.release == 'true'
@@ -120,4 +120,4 @@ jobs:
             echo "OVSX_PAT secret not set - skipping Open VSX publish."
             exit 0
           fi
-          npx --yes ovsx publish tracelens-${{ steps.ver.outputs.version }}.vsix -p "$OVSX_PAT"
+          npx --yes ovsx publish devsuite-tracelens-${{ steps.ver.outputs.version }}.vsix -p "$OVSX_PAT"
