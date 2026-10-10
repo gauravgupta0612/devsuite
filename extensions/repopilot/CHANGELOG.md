@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.1.4 — 2026-10-10
+- See the GitHub release notes for the full list of changes.
+
 ## 0.1.3 — 2026-10-10
 - See the GitHub release notes for the full list of changes.
 
