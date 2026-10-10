@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.1.1 — 2026-10-10
+- See the GitHub release notes for the full list of changes.
+
 ## 0.1.0 — initial release
 - Local repository index: languages, frameworks, build systems, build commands, entry points, modules.
 - Dependency graph for TypeScript/JavaScript, Python, Java/Kotlin, Go and IBM i (RPGLE, SQLRPGLE, RPG, CL, DDS, SQL, COBOL).

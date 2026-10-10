@@ -1,8 +1,8 @@
 {
   "name": "repopilot",
-  "displayName": "RepoPilot \u2014 Project Understanding Assistant",
-  "description": "Open any repository and instantly see its architecture, entry points, build commands, modules and dependency map \u2014 with evidence links for every claim. Supports TypeScript/JavaScript, Python, Java/Kotlin, Go, C# and IBM i (RPGLE, SQLRPGLE, CL, DDS, SQL, COBOL).",
-  "version": "0.1.0",
+  "displayName": "RepoPilot — Project Understanding Assistant",
+  "description": "Open any repository and instantly see its architecture, entry points, build commands, modules and dependency map — with evidence links for every claim. Supports TypeScript/JavaScript, Python, Java/Kotlin, Go, C# and IBM i (RPGLE, SQLRPGLE, CL, DDS, SQL, COBOL).",
+  "version": "0.1.1",
   "publisher": "gauravgupta0612",
   "author": {
     "name": "gauravgupta0612",
@@ -67,7 +67,7 @@
     "viewsWelcome": [
       {
         "view": "repopilot.overview",
-        "contents": "RepoPilot hasn't scanned this workspace yet.\n[Scan Workspace](command:repopilot.scan)\nEverything runs locally \u2014 no code leaves your machine unless you ask a question with a language model."
+        "contents": "RepoPilot hasn't scanned this workspace yet.\n[Scan Workspace](command:repopilot.scan)\nEverything runs locally — no code leaves your machine unless you ask a question with a language model."
       }
     ],
     "commands": [
@@ -225,7 +225,7 @@
         "id": "repopilot.chat",
         "name": "repopilot",
         "fullName": "RepoPilot",
-        "description": "Ask about this codebase \u2014 answers cite the files they come from",
+        "description": "Ask about this codebase — answers cite the files they come from",
         "isSticky": true,
         "commands": [
           {
