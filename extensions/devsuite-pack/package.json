@@ -1,0 +1,56 @@
+{
+  "name": "devsuite-pack",
+  "displayName": "DevSuite \u2014 Developer Productivity Pack",
+  "description": "Five focused tools in one install: RepoPilot (understand any repository), DevImpact (what a change affects and which tests to run), CodeGuard (pre-commit risk report), TraceLens (API request flow) and BugTrail (debugging memory). Supports TypeScript/JavaScript, Python, Java, Go, C# and IBM i (RPGLE, CL, DDS, SQL).",
+  "version": "0.1.0",
+  "publisher": "gauravgupta0612",
+  "author": {
+    "name": "gauravgupta0612",
+    "url": "https://github.com/gauravgupta0612"
+  },
+  "license": "MIT",
+  "icon": "media/logo.png",
+  "galleryBanner": {
+    "color": "#162842",
+    "theme": "dark"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gauravgupta0612/devsuite.git",
+    "directory": "extensions/devsuite-pack"
+  },
+  "bugs": {
+    "url": "https://github.com/gauravgupta0612/devsuite/issues"
+  },
+  "homepage": "https://github.com/gauravgupta0612/devsuite#readme",
+  "engines": {
+    "vscode": "^1.95.0"
+  },
+  "categories": [
+    "Extension Packs"
+  ],
+  "keywords": [
+    "extension pack",
+    "productivity",
+    "code review",
+    "impact analysis",
+    "api",
+    "debugging",
+    "onboarding",
+    "ibm i",
+    "rpgle"
+  ],
+  "extensionPack": [
+    "gauravgupta0612.repopilot",
+    "gauravgupta0612.devimpact",
+    "gauravgupta0612.devsuite-codeguard",
+    "gauravgupta0612.devsuite-tracelens",
+    "gauravgupta0612.bugtrail"
+  ],
+  "scripts": {
+    "package": "vsce package --no-dependencies"
+  },
+  "devDependencies": {
+    "@vscode/vsce": "^3.2.1"
+  }
+}

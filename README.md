@@ -24,7 +24,8 @@ devsuite/
 │   ├── devimpact/            Change impact analysis
 │   ├── codeguard/            Pre-commit risk scanner (+ standalone CLI / git hook)
 │   ├── tracelens/            API flow explorer
-│   └── bugtrail/             Debugging memory
+│   ├── bugtrail/             Debugging memory
+│   └── devsuite-pack/        Extension Pack: installs all five
 └── scripts/esbuild-extension.js   one bundler config for every extension
 ```
 
@@ -37,6 +38,7 @@ devsuite/
 | **CodeGuard** | Prioritised risk report for changes (secrets, security, regressions, tests, config, IBM i); pre-commit hook | `gauravgupta0612.devsuite-codeguard` |
 | **TraceLens** | All API endpoints; trace a request to database and external calls | `gauravgupta0612.devsuite-tracelens` |
 | **BugTrail** | Searchable history of errors, attempts and fixes; warns when a fixed bug returns | `gauravgupta0612.bugtrail` |
+| **DevSuite Pack** | Installs all five with one click | `gauravgupta0612.devsuite-pack` |
 
 ## Develop
 
