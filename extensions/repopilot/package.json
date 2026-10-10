@@ -2,7 +2,7 @@
   "name": "repopilot",
   "displayName": "RepoPilot — Project Understanding Assistant",
   "description": "Open any repository and instantly see its architecture, entry points, build commands, modules and dependency map — with evidence links for every claim. Supports TypeScript/JavaScript, Python, Java/Kotlin, Go, C# and IBM i (RPGLE, SQLRPGLE, CL, DDS, SQL, COBOL).",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "publisher": "gauravgupta0612",
   "author": {
     "name": "gauravgupta0612",
